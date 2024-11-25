@@ -14,29 +14,71 @@ alphabet2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 def encode_message():
         baseText = input("What message do you want to encode?")
         cipherQuestion = int(input("What number do you want to cipher the text by?"))
+        finalEncode = ""
         for x in range(len(baseText)):
             letter = alphabet.find(baseText[x])
             if letter == -1:
                 letter = alphabet2.find(baseText[x])
-            encodedLetter = letter + (cipherQuestion % 26)
-            finalEncode = alphabet[encodedLetter]
-            print(finalEncode)
+            encodedLetter = (letter + cipherQuestion) % 26
+            finalEncode += alphabet[encodedLetter]
+        print(finalEncode)
         pass
 
 # encodes a target file, similarly to encode_message, except now targeting a filename
 def encode_file():
+    fileQuestion = input("What file do you want to encode?")
+    file = open(fileQuestion, 'r')
+    fileStr = file.read()
+    cipherQuestion = int(input("What number do you want to cipher the text by?"))
+    finalEncode = ""
+    for x in range(len(fileStr)):
+        letter = alphabet.find(fileStr[x])
+        if letter == -1:
+            letter = alphabet2.find(fileStr[x])
+        encodedLetter = (letter + cipherQuestion) % 26
+        finalEncode += alphabet[encodedLetter]
+    print(finalEncode)
+    file.close()
     pass
 
 # decodes target file using a user-specified key. If key is unknown, a keypress should
 # call decode_unknown_key()
 def decode_file():
+    decodemenu = input("Is the key [1] known or [2] unknown?")
+    if decodemenu == "1":
+        fileQuestion = input("What file do you want to decode?")
+        file = open(fileQuestion, 'r')
+        fileStr = file.read()
+        cipherQuestion = int(input("What is the key?"))
+        finalEncode = ""
+        for x in range(len(fileStr)):
+            letter = alphabet.find(fileStr[x])
+            if letter == -1:
+                letter = alphabet2.find(fileStr[x])
+            encodedLetter = (letter + cipherQuestion) % 26
+            finalEncode += alphabet[encodedLetter]
+        print(finalEncode)
+        file.close()
+    if decodemenu == "2":
+        decode_unknown_key()
     pass
 
 # runs if the key is unknown. If this is true, print out all possible decoding combinations.
-def decode_unknown_key(filename):
-   encodedMessage = input("What are you trying to decode?")
-
-
+def decode_unknown_key():
+        fileQuestion = input("What file do you want to decode?")
+        file = open(fileQuestion, 'r')
+        fileStr = file.read()
+        for key in range(0, 25):
+            finalEncode = ""
+            for x in range(len(fileStr)):
+                letter = alphabet.find(fileStr[x])
+                if letter == -1:
+                    letter = alphabet2.find(fileStr[x])
+                encodedLetter = (letter + key) % 26
+                finalEncode += alphabet[encodedLetter]
+            print(finalEncode)
+            print(f"Key: {key}")
+        file.close()
 
 
 # main method declaration
@@ -58,7 +100,6 @@ def main():
         elif selection == "3":
             decode_file()
         elif selection == "4":
-            print("Goodbye.")
             exit()
         else:
             print("Invalid choice. Please try again.")
